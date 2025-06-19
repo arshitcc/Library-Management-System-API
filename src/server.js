@@ -33,13 +33,17 @@ app.route("/").get((req, res) => {
   });
 });
 
-
 import healthCheckRouter from "./routes/healthchecks.route.js";
 import userRouter from "./routes/users.route.js";
-
+import authorRouter from "./routes/authors.route.js";
+import bookRouter from "./routes/books.route.js";
+import loanRouter from "./routes/loans.route.js";
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
-app.use("/api/v1/auth", userRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/authors", authorRouter);
+app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/loans", loanRouter);
 
 connectDB()
   .then(() => {

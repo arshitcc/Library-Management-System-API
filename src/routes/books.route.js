@@ -24,7 +24,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(getAllBooks)
+  .get(authenticateUser, getAllBooks)
   .post(
     authenticateUser,
     verifyPermission([UserRolesEnum.AUTHOR]),
