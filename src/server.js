@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 dotenv.config({
   path: "./.env",
@@ -54,3 +55,5 @@ connectDB()
   .catch((error) => {
     console.error("MongoDB Connection Error: ", error);
   });
+
+app.use(errorHandler);
