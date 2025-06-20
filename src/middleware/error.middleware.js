@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { ApiError } from "../utils/api-error";
-import removeUnusedMulterImageFilesOnError from "../utils/helper.js";
+import { ApiError } from "../utils/api-error.js";
+import { removeUnusedMulterImageFilesOnError } from "../utils/helper.js";
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
