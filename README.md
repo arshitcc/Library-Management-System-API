@@ -1,4 +1,3 @@
-````markdown
 # Library Management System API
 
 A RESTful API for managing a library’s resources—books, authors, users, loans, and reviews—built with Node.js, Express, and MongoDB. It includes authentication, validation, file uploads (e.g., cover images, profile pictures), and error handling.
@@ -38,7 +37,7 @@ A RESTful API for managing a library’s resources—books, authors, users, loan
    ```bash
    git clone https://github.com/arshitcc/Library-Management-System-API.git
    cd Library-Management-System-API
-````
+    ````  
 
 2. **Install dependencies**
 
@@ -93,7 +92,7 @@ A RESTful API for managing a library’s resources—books, authors, users, loan
      npm start
      ```
 
-## Folder Structure (example)
+## Folder Structure
 
 ```
 Library-Management-System-API/
@@ -177,12 +176,12 @@ Library-Management-System-API/
 ## Running & Testing
 
 * **Start server**: `npm run dev`
-* **API documentation**: Refer to **API\_DOCUMENTATION.md** or Postman collection if provided.
+* **API documentation**: Refer to **README.md** or Postman collection.
 
 
 ## API Documentation
 
-Refer to the detailed API docs (e.g., `docs/API_DOCUMENTATION.md`) which cover:
+Refer to the detailed API docs (e.g., `docs/README.md`) which cover:
 
 * **Books**:
 
