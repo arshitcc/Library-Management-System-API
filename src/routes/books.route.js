@@ -24,7 +24,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(authenticateUser, getAllBooks)
+  .get(getAllBooks)
   .post(
     authenticateUser,
     verifyPermission([UserRolesEnum.AUTHOR]),
@@ -35,7 +35,7 @@ router
 
 router
   .route("/:id")
-  .get(authenticateUser, getBookById)
+  .get(getBookById)
   .put(
     authenticateUser,
     verifyPermission([UserRolesEnum.AUTHOR]),
@@ -50,7 +50,7 @@ router
   );
 
 router
-  .route("/:id/upload-cover")
+  .route("/:id/upload-cover-image")
   .patch(
     authenticateUser,
     verifyPermission([UserRolesEnum.AUTHOR]),

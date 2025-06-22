@@ -17,7 +17,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(authenticateUser, verifyPermission([UserRolesEnum.ADMIN]), getAllLoans)
+  .get(getAllLoans)
   .post(authenticateUser, addNewLoanValidators(), validate, createNewLoan);
 
 router

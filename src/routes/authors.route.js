@@ -21,12 +21,12 @@ const router = Router();
 
 router
   .route("/")
-  .get(authenticateUser, getAllAuthors)
+  .get(getAllAuthors)
   .post(authenticateUser, addNewAuthorValidators(), validate, addNewAuthor);
 
 router
   .route("/:id")
-  .get(authenticateUser, getAuthorById)
+  .get(getAuthorById)
   .put(
     authenticateUser,
     verifyPermission([UserRolesEnum.AUTHOR]),

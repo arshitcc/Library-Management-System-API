@@ -27,7 +27,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(getAllUsers)
+  .get(authenticateUser, verifyPermission([UserRolesEnum.ADMIN]), getAllUsers)
   .post(registerNewUserValidators(), validate, registerNewUser);
 
 router.route("/login").post(userLoginValidators(), validate, userLogin);
@@ -52,9 +52,6 @@ router
     validate,
     assignRole,
   )
-  .delete(
-    authenticateUser,
-    deleteUserById,
-  );
+  .delete(authenticateUser, deleteUserById);
 
 export default router;

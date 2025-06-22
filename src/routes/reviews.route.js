@@ -18,7 +18,7 @@ const router = Router({ mergeParams: true });
 
 router
   .route("/")
-  .get(authenticateUser, getAllReviewsOfBookbyBookId)
+  .get(getAllReviewsOfBookbyBookId)
   .post(
     authenticateUser,
     addNewReviewValidators(),

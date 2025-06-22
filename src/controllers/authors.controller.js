@@ -127,7 +127,7 @@ const getAuthorById = asyncHandler(async (req, res) => {
     },
   ]);
 
-  if (!author) {
+  if (!author || !author.length) {
     throw new ApiError(404, "Author doesn't exist");
   }
 

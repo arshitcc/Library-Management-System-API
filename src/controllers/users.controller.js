@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/async-handler.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
-import { User, UserAuthType, UserRolesEnum } from "../models/users.model.js";
+import { AvailableUserRoles, User, UserAuthType } from "../models/users.model.js";
 import { NODE_ENV } from "../utils/env.js";
 import { isValidObjectId } from "mongoose";
 import {
@@ -27,7 +27,45 @@ async function generateAccessAndRefreshTokens(user) {
 }
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find();
+  let pageNum = parseInt(req.query.page, 10);
+  if (isNaN(pageNum) || pageNum < 1) {
+    pageNum = 1;
+  }
+
+  const limit = 2;
+  const skip = (pageNum - 1) * limit;
+
+  const { role } = req.query;
+
+  const matchStage = {};
+  if (typeof role === "string" && role.trim() !== "" && AvailableUserRoles.includes(role)) {
+    matchStage.role = role;
+  }
+
+  const users = await User.aggregate([
+    { $match: matchStage},
+    { $sort: { createdAt: -1 } },
+    {
+      $facet: {
+        metadata: [{ $count: "total" }, { $addFields: { page: pageNum } }],
+        data: [
+          {
+            $project: {
+              password: 0,
+              refreshToken: 0,
+              emailVerificationToken: 0,
+              emailVerificationExpiry: 0,
+              forgotPasswordToken: 0,
+              forgotPasswordExpiry: 0,
+            },
+          },
+          { $skip: skip },
+          { $limit: limit },
+        ],
+      },
+    },
+  ]);
+
   if (!users) {
     throw new ApiError(500, "Something Went Wrong");
   }
@@ -118,9 +156,8 @@ const userLogin = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid Credentials");
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-    existedUser,
-  );
+  const { accessToken, refreshToken } =
+    await generateAccessAndRefreshTokens(existedUser);
 
   const loggedInUser = await User.findOne({ _id: existedUser._id }).select(
     userDetailsNotRequired,
@@ -205,6 +242,17 @@ const updateUserById = asyncHandler(async (req, res) => {
   }
 
   const { fullname, email, username } = req.body;
+
+  const existingAccountForUpdatedData = await User.findOne({
+    $and: [
+      { $or: [{ username: username }, { email: email }] },
+      { _id: { $ne: id } },
+    ],
+  });
+
+  if (existingAccountForUpdatedData) {
+    throw new ApiError(400, "Username or Email already exists");
+  }
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
